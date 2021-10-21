@@ -2,6 +2,9 @@ package org.prebid.server.functional.model.response.auction
 
 import groovy.transform.ToString
 import org.prebid.server.functional.model.request.auction.Imp
+import org.prebid.server.functional.util.PBSUtils
+
+import static java.math.RoundingMode.HALF_UP
 
 @ToString(includeNames = true, ignoreNulls = true)
 class Bid {
@@ -33,6 +36,10 @@ class Bid {
     Integer exp
     BidExt ext
 
+    static List<Bid> getDefaultBids(List<String> impIds) {
+        impIds.collect { getDefaultBid(it) }
+    }
+
     static Bid getDefaultBid(Imp imp) {
         getDefaultBid(imp.id)
     }
@@ -41,7 +48,8 @@ class Bid {
         new Bid().tap {
             id = UUID.randomUUID()
             impid = impId
-            price = 1.23
+            price = BigDecimal.valueOf(PBSUtils.getFractionalRandomNumber(0, 10))
+                              .setScale(3, HALF_UP)
             crid = 1
         }
     }
