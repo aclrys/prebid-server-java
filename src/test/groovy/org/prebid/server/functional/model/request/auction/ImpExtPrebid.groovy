@@ -10,6 +10,7 @@ class ImpExtPrebid {
 
     Bidder bidder
     StoredAuctionResponse storedAuctionResponse
+    ImpExtPrebidFloors floors
 
     static ImpExtPrebid getDefaultImpExtPrebid() {
         new ImpExtPrebid().tap {
