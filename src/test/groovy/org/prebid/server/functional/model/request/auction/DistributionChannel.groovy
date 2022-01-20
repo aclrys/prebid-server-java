@@ -8,6 +8,6 @@ enum DistributionChannel {
 
     @JsonValue
     String getValue() {
-        name().toLowerCase()
+        name()
     }
 }
