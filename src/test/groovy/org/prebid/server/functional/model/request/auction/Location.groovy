@@ -6,7 +6,8 @@ enum Location {
 
     REQUEST("request"),
     FETCH("fetch"),
-    NO_DATA("noData")
+    NO_DATA("noData"),
+    PROVIDER("provider") //bug should be fetch instead
 
     @JsonValue
     String value

@@ -17,7 +17,6 @@ class ModelGroup {
     BigDecimal defaultFloor
 
     static ModelGroup getModelGroup() {
-//        def schemaDef = PriceFloorSchema.priceFloorSchema
        new ModelGroup(
             currency: Currency.USD,
             schema: PriceFloorSchema.priceFloorSchema,

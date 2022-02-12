@@ -57,13 +57,13 @@ abstract class PriceFloorsBaseSpec extends BaseSpec {
         new AccountConfig(auction: new AccountAuctionConfig(priceFloors: floors))
     }
 
-    static Account getAccountWithEnabledFetch(String accountId) {
+    protected static Account getAccountWithEnabledFetch(String accountId) {
         def priceFloors = new AccountPriceFloorsConfig(enabled: true, fetch: new PriceFloorsFetch(url: fetchUrl, enabled: true))
         def accountConfig = new AccountConfig(auction: new AccountAuctionConfig(priceFloors: priceFloors))
         new Account(uuid: accountId, config: accountConfig)
     }
 
-    static BidRequest getBidRequestWithFloors(DistributionChannel channel = SITE) {
+    protected static BidRequest getBidRequestWithFloors(DistributionChannel channel = SITE) {
         def floors = ExtPrebidFloors.extPrebidFloors
         BidRequest.getDefaultBidRequest(channel).tap {
             imp[0].bidFloor = floors.data.modelGroups[0].values[rule]
@@ -79,7 +79,6 @@ abstract class PriceFloorsBaseSpec extends BaseSpec {
 
     }
 
-
     static String getRule() {
         new Rule(mediaType: MediaType.MULTIPLE, country: Country.MULTIPLE).rule
     }
@@ -90,10 +89,6 @@ abstract class PriceFloorsBaseSpec extends BaseSpec {
 
     static BigDecimal getRandomFloorValue() {
         PBSUtils.getRoundedFractionalNumber(PBSUtils.getFractionalRandomNumber(1, 2), 2)
-    }
-
-    static BigDecimal getRandomCurrencyRate() {
-        PBSUtils.getRoundedFractionalNumber(PBSUtils.getFractionalRandomNumber(1, 2), 5)
     }
 
     static BidRequest getBidRequestWithMultipleMediaTypes() {

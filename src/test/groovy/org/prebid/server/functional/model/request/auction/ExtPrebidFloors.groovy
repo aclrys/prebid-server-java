@@ -19,9 +19,8 @@ class ExtPrebidFloors {
     Integer skipRate
     PriceFloorData data
 
-    static ExtPrebidFloors getExtPrebidFloors(){
-        new ExtPrebidFloors(
-                floorMin: 0.5,
+    static ExtPrebidFloors getExtPrebidFloors() {
+        new ExtPrebidFloors(floorMin: 0.5,
                 floorProvider: PBSUtils.randomString,
                 data: PriceFloorData.priceFloorData
         )

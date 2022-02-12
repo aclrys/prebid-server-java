@@ -39,7 +39,6 @@ import static org.prebid.server.functional.model.pricefloors.PriceFloorField.SIZ
 
 class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
 
-    @PendingFeature
     def "PBS should ignore rule and log warning when total number of split entries in a given rule doesn't match the number of fields"() {
         given: "Default BidRequest"
         def bidRequest = BidRequest.defaultBidRequest
@@ -72,7 +71,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         assert response.ext?.warnings[ErrorType.PREBID]*.message == ["placeholder"]
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when media type is defined in rules"() {
         given: "Account with enabled fetch, fetch.url in the DB"
         def account = getAccountWithEnabledFetch(bidRequest.site.publisher.id)
@@ -102,7 +100,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         BidRequest.defaultVideoRequest   | randomFloorValue | randomFloorValue | 0.6
     }
 
-    @PendingFeature
     def "PBS should choose rule with '*' when imp[0].banner.format contains multiple sizes"() {
         given: "Default BidRequest with format"
         def lowerWidth = 300
@@ -138,7 +135,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor == floorsProviderFloorValue
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when size is defined in rules"() {
         given: "Default BidRequest with size"
         def width = 300
@@ -180,7 +176,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
                     imp[0].video.h = heightVal } }]
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when domain is defined in rules"() {
         given: "BidRequest with domain"
         def domain = PBSUtils.randomString
@@ -288,7 +283,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
                                     app.publisher.id = accountIdVal} }]
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when bundle is defined in rules"() {
         given: "BidRequest with domain"
         def bundle = PBSUtils.randomString
@@ -318,7 +312,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor == floorValue
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when channel is defined in rules"() {
         given: "BidRequest with domain"
         def channel = PBSUtils.randomString
@@ -348,7 +341,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor == floorValue
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when gptSlot is defined in rules"() {
         given: "BidRequest with domain"
         def gptSlot = PBSUtils.randomString
@@ -384,7 +376,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
                                     imp[0].ext.data = new ImpExtData(adServer: new AdServer(name: PBSUtils.randomString), pbAdSlot: gptSlotVal)} }]
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when pbAdSlot is defined in rules"() {
         given: "BidRequest with domain"
         def pbAdSlot = PBSUtils.randomString
@@ -414,7 +405,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor == floorValue
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when country is defined in rules"() {
         given: "BidRequest with domain"
         def country = USA
@@ -444,7 +434,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor == floorValue
     }
 
-    @PendingFeature
     def "PBS should choose correct rule when devicetype is defined in rules"() {
         given: "BidRequest with device.ua"
         def bidRequest = BidRequest.defaultBidRequest.tap {
@@ -487,7 +476,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         PBSUtils.randomString | randomFloorValue | randomFloorValue | 0.8
     }
 
-    @PendingFeature
     def "PBS should choose no rule specifying deviceType when device is not present"() {
         given: "BidRequest with device.ua"
         def bidRequest = BidRequest.defaultBidRequest.tap {
@@ -522,7 +510,6 @@ class PriceFloorsRulesSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor == floorValue
     }
 
-    @PendingFeature
     def "PBS should use data.modelGroups[].default when no matching rules are found"() {
         given: "BidRequest with device.ua"
         def bidRequest = BidRequest.defaultBidRequest

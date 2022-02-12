@@ -16,7 +16,6 @@ class PriceFloorsCurrencySpec extends PriceFloorsBaseSpec {
 
     private static final int FLOOR_VALUE_PRECISION = 4
 
-    @PendingFeature
     def "PBS should update bidFloor, bidFloorCur for signalling when request.cur is specified"() {
         given: "Default BidRequest with cur"
         def bidRequest = bidRequestWithFloors.tap {
@@ -47,7 +46,6 @@ class PriceFloorsCurrencySpec extends PriceFloorsBaseSpec {
         }
     }
 
-    @PendingFeature
     def "PBS should make FP enforcement with currency conversion when request.cur and floor currency are different"() {
         given: "Default BidRequest with cur"
         def bidRequest = bidRequestWithFloors.tap {
@@ -86,7 +84,6 @@ class PriceFloorsCurrencySpec extends PriceFloorsBaseSpec {
         assert response.cur == bidRequest.cur[0]
     }
 
-    @PendingFeature
     def "PBS should update bidFloor, bidFloorCur for signalling when floorMinCur is defined in request"() {
         given: "BidRequest with floorMinCur"
         def floorMin = randomFloorValue
@@ -125,7 +122,6 @@ class PriceFloorsCurrencySpec extends PriceFloorsBaseSpec {
         }
     }
 
-    @PendingFeature
     def "PBS should not update bidFloor, bidFloorCur for signalling when currency conversion is not available"() {
         given: "Pbs config with disabled conversion"
         def pbsService = pbsServiceFactory.getService(floorsConfig +

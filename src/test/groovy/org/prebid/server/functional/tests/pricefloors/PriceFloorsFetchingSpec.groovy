@@ -9,9 +9,9 @@ import org.prebid.server.functional.model.request.amp.AmpRequest
 import org.prebid.server.functional.model.request.auction.BidRequest
 import org.prebid.server.functional.model.request.auction.ExtPrebidFloors
 import org.prebid.server.functional.model.request.auction.PrebidStoredRequest
+import org.prebid.server.functional.model.response.auction.BidResponse
 import org.prebid.server.functional.model.response.auction.ErrorType
 import org.prebid.server.functional.util.PBSUtils
-import spock.lang.PendingFeature
 
 import java.time.Instant
 
@@ -24,7 +24,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
 
     private static final int maxEnforceFloorsRate = 100
 
-    @PendingFeature
     def "PBS should activate floors feature when price-floors.enabled = true in PBS config"() {
         given: "Pbs with PF configuration"
         def pbsService = pbsServiceFactory.getService(floorsConfig + ["price-floors.enabled": "true"])
@@ -47,7 +46,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor
     }
 
-    @PendingFeature
     def "PBS should not activate floors feature when price-floors.enabled = false in #description config"() {
         given: "Pbs with PF configuration"
         def pbsService = pbsServiceFactory.getService(floorsConfig + ["price-floors.enabled": pbdConfigEnabled])
@@ -75,7 +73,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         "account"   | "true"           | false
     }
 
-    @PendingFeature
     def "PBS should validate fetch.url from account config"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -114,7 +111,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert bidderRequest.imp[0]?.bidFloor == bidRequest.imp[0].bidFloor
     }
 
-    @PendingFeature
     def "PBS should validate fetch.max-age-sec from account config"() {
         given: "Pbs with PF configuration with minMaxAgeSec"
         def minMaxAgeSec = PBSUtils.randomNumber
@@ -157,7 +153,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should validate fetch.period-sec from account config"() {
         given: "Pbs with PF configuration with minMaxAgeSec, maxAgeSec"
         def minMaxAgeSec = PBSUtils.randomNumber
@@ -206,7 +201,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
                         { int min, int max -> new PriceFloorsFetch(periodSec: maxAgeSec, maxAgeSec: maxAgeSec - 1) }]
     }
 
-    @PendingFeature
     def "PBS should validate fetch.max-file-size-kb from account config"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -241,7 +235,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should validate fetch.max-rules from account config"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -276,7 +269,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should validate fetch.timeout-ms from account config"() {
         given: "Pbs with PF configuration with timeoutMs, minTimeoutMs, maxTimeoutMs"
         def minTimeoutMs = PBSUtils.randomNumber
@@ -326,7 +318,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
                         { int min, int max -> new PriceFloorsFetch(timeoutMs: maxTimeoutMs + 1) }]
     }
 
-    @PendingFeature
     def "PBS should validate fetch.enforce-floors-rate from account config"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -364,7 +355,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         enforceFloorsRate << [PBSUtils.randomNegativeNumber, maxEnforceFloorsRate + 1]
     }
 
-    @PendingFeature
     def "PBS should fetch data from provider when price-floors.fetch.enabled = true in account config"() {
         given: "Default BidRequest with ext.prebid.floors"
         def bidRequest = BidRequest.getDefaultBidRequest(APP).tap {
@@ -384,7 +374,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert floorsProvider.getRequestCount(bidRequest.site.publisher.id) == 1
     }
 
-    @PendingFeature
     def "PBS should process floors from request when price-floors.fetch.enabled = false in account config"() {
         given: "BidRequest with floors"
         def bidRequest = bidRequestWithFloors
@@ -394,6 +383,12 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
             config.auction.priceFloors.fetch = fetch
         }
         accountDao.save(account)
+
+        and: "Set bidder response"
+        def bidResponse = BidResponse.getDefaultBidResponse(bidRequest).tap {
+            seatbid.first().bid.first().price = bidRequest.imp[0].bidFloor
+        }
+        bidder.setResponse(bidRequest.id, bidResponse)
 
         when: "PBS processes auction request"
         floorsPbsService.sendAuctionRequest(bidRequest)
@@ -409,7 +404,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         fetch << [new PriceFloorsFetch(enabled: false, url: fetchUrl), new PriceFloorsFetch(url: fetchUrl)]
     }
 
-    @PendingFeature
     def "PBS should fetch data from provider when use-dynamic-data = true"() {
         given: "Pbs with PF configuration with useDynamicData"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -453,7 +447,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         true                    | null
     }
 
-    @PendingFeature
     def "PBS should process floors from request when use-dynamic-data = false"() {
         given: "Pbs with PF configuration with useDynamicData"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -488,7 +481,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         false                   | null
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when Floors Provider return status code != 200"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -527,7 +519,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when Floors Provider return invalid json"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -567,7 +558,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when Floors Provider return empty response body"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -608,7 +598,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when Floors Provider response doesn't contain model"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -651,7 +640,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when Floors Provider response doesn't contain rule"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -694,7 +682,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when Floors Provider response has more than fetch.max-rules"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -739,7 +726,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when fetch request exceeds fetch.timeout-ms"() {
         given: "PBS with adapter configuration"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -788,7 +774,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should log error and increase #metric when Floors Provider's response size is more than fetch.max-file-size-kb"() {
         given: "Test start time"
         def startTime = Instant.now()
@@ -834,7 +819,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         assert !response.seatbid?.isEmpty()
     }
 
-    @PendingFeature
     def "PBS should prefer data from stored request when request doesn't contain floors data"() {
         given: "Default BidRequest with storedRequest"
         def bidRequest = request.tap {
@@ -877,7 +861,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         request << [BidRequest.defaultBidRequest, BidRequest.getDefaultBidRequest(APP)]
     }
 
-    @PendingFeature
     def "PBS should prefer data from request when fetch is disabled in account config"() {
         given: "Default BidRequest"
         def bidRequest = bidRequestWithFloors
@@ -887,6 +870,12 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
             config.auction.priceFloors.fetch.enabled = false
         }
         accountDao.save(account)
+
+        and: "Set bidder response"
+        def bidResponse = BidResponse.getDefaultBidResponse(bidRequest).tap {
+            seatbid.first().bid.first().price = bidRequest.imp[0].bidFloor
+        }
+        bidder.setResponse(bidRequest.id, bidResponse)
 
         when: "PBS processes auction request"
         floorsPbsService.sendAuctionRequest(bidRequest)
@@ -906,7 +895,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         }
     }
 
-    @PendingFeature
     def "PBS should prefer data from stored request when fetch is disabled in account config for amp request"() {
         given: "Default AmpRequest"
         def ampRequest = AmpRequest.defaultAmpRequest
@@ -942,7 +930,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         }
     }
 
-    @PendingFeature
     def "PBS should prefer data from floors provider when floors data is defined in both request and stored request"() {
         given: "BidRequest with storedRequest"
         def bidRequest = bidRequestWithFloors.tap {
@@ -993,7 +980,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         }
     }
 
-    @PendingFeature
     def "PBS should prefer data from floors provider when floors data is defined in stored request for amp request"() {
         given: "Default AmpRequest"
         def ampRequest = AmpRequest.defaultAmpRequest
@@ -1040,7 +1026,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         }
     }
 
-    @PendingFeature
     def "PBS should periodically fetch floor rules when previous response from floors provider is #description"() {
         given: "PBS with PF configuration, minMaxAgeSec, maxAgeSec"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -1075,7 +1060,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         "invalid"   | PriceFloorRules.priceFloorRules.tap { data.modelGroups = null }
     }
 
-    @PendingFeature
     def "PBS should continue to hold onto previously fetched rules when fetch.enabled = false in account config"() {
         given: "PBS with PF configuration"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -1134,7 +1118,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         }
     }
 
-    @PendingFeature
     def "PBS should validate rules from request when modelWeight from request is invalid"() {
         given: "Default BidRequest with floors"
         def floorValue = randomFloorValue
@@ -1167,7 +1150,6 @@ class PriceFloorsFetchingSpec extends PriceFloorsBaseSpec {
         invalidModelWeight << [0, -1, 1000000]
     }
 
-    @PendingFeature
     def "PBS should validate rules from amp request when modelWeight from request is invalid"() {
         given: "Default AmpRequest"
         def ampRequest = AmpRequest.defaultAmpRequest

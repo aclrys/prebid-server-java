@@ -23,12 +23,12 @@ class Rule {
 
     @JsonValue
     String getRule() {
-        def result = ""
-        this.class.declaredFields.findAll { !it.synthetic && !Modifier.isStatic(it.modifiers) && this[it.name] != null}.each {
-            result += this[it.name]
-            result += delimiter
+        def stringBuilder = new StringBuilder()
+        this.class.declaredFields.findAll { !it.synthetic && !Modifier.isStatic(it.modifiers) && this[it.name] != null }.each {
+            stringBuilder.append(this[it.name])
+                         .append(delimiter)
         }
-        StringUtils.removeEnd(result, delimiter).toLowerCase()
+        StringUtils.removeEnd(stringBuilder.toString(), delimiter).toLowerCase()
     }
 
     @JsonValue

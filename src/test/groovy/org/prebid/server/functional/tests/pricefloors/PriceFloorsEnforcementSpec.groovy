@@ -14,13 +14,11 @@ import org.prebid.server.functional.model.response.auction.Bid
 import org.prebid.server.functional.model.response.auction.BidResponse
 import org.prebid.server.functional.model.response.auction.ErrorType
 import org.prebid.server.functional.util.PBSUtils
-import spock.lang.PendingFeature
 
 import static org.prebid.server.functional.model.bidder.BidderName.GENERIC
 
 class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
 
-    @PendingFeature
     def "PBS should make PF enforcement for amp request when stored request #descriprion rules"() {
         given: "Default AmpRequest"
         def ampRequest = AmpRequest.defaultAmpRequest
@@ -81,7 +79,6 @@ class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
         "contains"        | ExtPrebidFloors.extPrebidFloors
     }
 
-    @PendingFeature
     def "PBS should reject bids when ext.prebid.floors.enforcement.enforcePBS = #enforcePbs"() {
         given: "Default BidRequest"
         def bidRequest = BidRequest.defaultBidRequest.tap {
@@ -122,7 +119,6 @@ class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
         enforcePbs << [true, null]
     }
 
-    @PendingFeature
     def "PBS should not reject bids when ext.prebid.floors.enforcement.enforcePBS = false"() {
         given: "Default BidRequest"
         def bidRequest = BidRequest.defaultBidRequest.tap {
@@ -157,7 +153,6 @@ class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
                 bidResponse.seatbid.first().bid.collect { it.price }.sort()
     }
 
-    @PendingFeature
     def "PBS should make PF enforcement when imp[].bidfloor/cur comes from request"() {
         given: "Default BidRequest with floors"
         def bidRequest = bidRequestWithFloors
@@ -190,7 +185,6 @@ class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
         assert response.seatbid?.first()?.bid?.collect { it.price } == [floorValue]
     }
 
-    @PendingFeature
     def "PBS should suppress deal that are below the matched floor when enforce-deal-floors = true"() {
         given: "Pbs with PF configuration with enforceDealFloors"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -237,7 +231,6 @@ class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
         assert response.seatbid.first().bid.collect { it.price } == [floorValue]
     }
 
-    @PendingFeature
     def "PBS should not suppress deal that are below the matched floor according to ext.prebid.floors.enforcement.enforcePBS"() {
         given: "Pbs with PF configuration with enforceDealFloors"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -279,20 +272,19 @@ class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
         bidder.setResponse(bidRequest.id, bidResponse)
 
         when: "PBS processes auction request"
-        def response = defaultPbsService.sendAuctionRequest(bidRequest)
+        def response = pbsService.sendAuctionRequest(bidRequest)
 
         then: "PBS should choose bid with deal"
         assert response.seatbid?.first()?.bid?.first()?.id == bidResponse.seatbid.first().bid.first().id
         assert response.seatbid.first().bid.collect { it.price } == [dealBidPrice]
 
         where:
-        pbsConfigEnforceDealFloors | EnforceDealFloors | enforcePbs | accountEnforceDealFloors | floorDeals
-        true                       | null              | false      | true
-        false                      | false             | true       | true
-        false                      | null              | true       | false
+        pbsConfigEnforceDealFloors | enforcePbs | accountEnforceDealFloors | floorDeals
+        true                       | null       | false                    | true
+        false                      | false      | true                     | true
+        false                      | null       | true                     | false
     }
 
-    @PendingFeature
     def "PBS should suppress any bids below the matched floor when fetch.enforce-floors-rate = 100 in account config"() {
         given: "Pbs with PF configuration with minMaxAgeSec"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
@@ -350,7 +342,6 @@ class PriceFloorsEnforcementSpec extends PriceFloorsBaseSpec {
         100                              | null        | null
     }
 
-    @PendingFeature
     def "PBS should not suppress any bids below the matched floor when fetch.enforce-floors-rate = 0 in account config"() {
         given: "Pbs with PF configuration with minMaxAgeSec"
         def defaultAccountConfigSettings = defaultAccountConfigSettings.tap {
