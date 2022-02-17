@@ -1,7 +1,6 @@
 package org.prebid.server.functional.tests
 
 import org.prebid.server.functional.model.UidsCookie
-import org.prebid.server.functional.model.bidder.BidderName
 import org.prebid.server.functional.model.db.Account
 import org.prebid.server.functional.model.db.StoredRequest
 import org.prebid.server.functional.model.request.amp.AmpRequest
@@ -162,14 +161,6 @@ class SmokeSpec extends BaseSpec {
 
         then: "Response should contain status OK"
         assert response.application?.status == OK
-    }
-
-    def "PBS should get info about active bidders"() {
-        when: "PBS processes bidders info request"
-        def response = defaultPbsService.sendInfoBiddersRequest()
-
-        then: "Response should contain bidders info"
-        assert !response.isEmpty()
     }
 
     def "PBS should get info about requested bidder"() {

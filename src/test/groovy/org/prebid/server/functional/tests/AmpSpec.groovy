@@ -8,11 +8,11 @@ import org.prebid.server.functional.model.request.auction.Site
 import org.prebid.server.functional.model.request.auction.StoredAuctionResponse
 import org.prebid.server.functional.model.response.auction.SeatBid
 import org.prebid.server.functional.service.PrebidServerService
+import org.prebid.server.functional.util.PBSUtils
 import spock.lang.Shared
 
+import static java.math.RoundingMode.DOWN
 import static org.prebid.server.functional.util.SystemProperties.PBS_VERSION
-
-import java.math.RoundingMode
 
 class AmpSpec extends BaseSpec {
 
@@ -161,17 +161,17 @@ class AmpSpec extends BaseSpec {
         storedRequestDao.save(storedRequest)
 
         and: "Stored response in DB"
-        def responseData = SeatBid.getStoredResponse(ampStoredRequest)
-        def storedResponse = new StoredResponse(resid: storedResponseId, responseData: responseData)
+        def storedAuctionResponse = SeatBid.getStoredResponse(ampStoredRequest)
+        def storedResponse = new StoredResponse(resid: storedResponseId, storedAuctionResponse: storedAuctionResponse)
         storedResponseDao.save(storedResponse)
 
         when: "PBS processes amp request"
         def response = defaultPbsService.sendAmpRequest(ampRequest)
 
         then: "Response should contain information from stored response"
-        def price = responseData.bid[0].price
-        assert response.targeting["hb_pb"] == "${price.setScale(1, RoundingMode.DOWN)}0"
-        assert response.targeting["hb_size"] == "${responseData.bid[0].w}x${responseData.bid[0].h}"
+        def price = storedAuctionResponse.bid[0].price
+        assert response.targeting["hb_pb"] == "${price.setScale(1, DOWN)}0"
+        assert response.targeting["hb_size"] == "${storedAuctionResponse.bid[0].w}x${storedAuctionResponse.bid[0].h}"
 
         and: "PBS not send request to bidder"
         assert bidder.getRequestCount(ampStoredRequest.id) == 0

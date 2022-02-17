@@ -3,7 +3,8 @@ package org.prebid.server.functional.model.response.auction
 import groovy.transform.ToString
 import org.prebid.server.functional.model.bidder.BidderName
 import org.prebid.server.functional.model.request.auction.BidRequest
-import org.prebid.server.functional.util.PBSUtils
+
+import static org.prebid.server.functional.model.bidder.BidderName.GENERIC
 
 @ToString(includeNames = true, ignoreNulls = true)
 class SeatBid {
@@ -13,10 +14,7 @@ class SeatBid {
     Integer group
 
     static SeatBid getStoredResponse(BidRequest bidRequest) {
-        def bids = Bid.getDefaultBids(bidRequest.imp*.id).each {
-            it.h = PBSUtils.randomNumber
-            it.w = PBSUtils.randomNumber
-        }
-        new SeatBid(bid: bids, seat: BidderName.GENERIC)
+        def bids = Bid.getDefaultBids(bidRequest.imp)
+        new SeatBid(bid: bids, seat: GENERIC)
     }
 }

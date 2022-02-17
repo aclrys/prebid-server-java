@@ -4,7 +4,6 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.prebid.server.functional.model.ResponseModel
 import org.prebid.server.functional.model.mock.services.generalplanner.PlansResponse
-import org.prebid.server.functional.model.bidder.BidderName
 import org.prebid.server.functional.model.request.auction.BidRequest
 
 import static org.prebid.server.functional.model.bidder.BidderName.GENERIC
@@ -22,12 +21,8 @@ class BidResponse implements ResponseModel {
     BidResponseExt ext
 
     static BidResponse getDefaultBidResponse(BidRequest bidRequest) {
-        getDefaultBidResponse(bidRequest.id, bidRequest.imp*.id)
-    }
-
-    static BidResponse getDefaultBidResponse(String id, List<String> impIds) {
-        def bidResponse = new BidResponse(id: id)
-        def bids = Bid.getDefaultBids(impIds)
+        def bidResponse = new BidResponse(id: bidRequest.id)
+        def bids = Bid.getDefaultBids(bidRequest.imp)
         def seatBid = new SeatBid(bid: bids, seat: GENERIC)
         bidResponse.seatbid = [seatBid]
         bidResponse
@@ -41,9 +36,5 @@ class BidResponse implements ResponseModel {
         bid.w = lineItem.sizes[0].w
         bid.h = lineItem.sizes[0].h
         bidResponse
-    }
-
-    static private List<Bid> getDefaultBids(List<String> impIds) {
-        impIds.collect { Bid.getDefaultBid(it) }
     }
 }
