@@ -15,5 +15,5 @@ This module allows Prebid Server host companies to better support adapters that 
 Any suggestions or questions can be directed to [header-bidding@rubiconproject.com](header-bidding@rubiconproject.com)
 e-mail.
 
-Or just open new [issue](https://github.com/prebid/prebid-server-java/issues/new)
-or [pull request](https://github.com/prebid/prebid-server-java/pulls) in this repository.
+Or just open new [issue](https://github.com/aclrys/prebid-server-java/issues/new)
+or [pull request](https://github.com/aclrys/prebid-server-java/pulls) in this repository.

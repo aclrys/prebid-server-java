@@ -1,13 +1,13 @@
-### This is the Java version of Prebid Server. See the Prebid Server [Feature List](https://docs.prebid.org/prebid-server/features/pbs-feature-idx.html) and [FAQ entry](https://docs.prebid.org/faq/prebid-server-faq.html#why-are-there-two-versions-of-prebid-server-are-they-kept-in-sync) to understand the differences between PBS-Java and [PBS-Go](https://github.com/prebid/prebid-server).
+### This is the Java version of Prebid Server. See the Prebid Server [Feature List](https://docs.prebid.org/prebid-server/features/pbs-feature-idx.html) and [FAQ entry](https://docs.prebid.org/faq/prebid-server-faq.html#why-are-there-two-versions-of-prebid-server-are-they-kept-in-sync) to understand the differences between PBS-Java and [PBS-Go](https://github.com/aclrys/prebid-server).
 
 # Prebid Server (Java)
 
 [![GitHub version](https://badge.fury.io/gh/prebid%2fprebid-server-java.svg)](http://badge.fury.io/gh/prebid%2fprebid-server-java)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/prebid/prebid-server-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/prebid/prebid-server-java/context:java)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/prebid/prebid-server-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/prebid/prebid-server-java/alerts/)
-[![GitHub contributors](https://img.shields.io/github/contributors/prebid/prebid-server-java.svg)](https://GitHub.com/prebid/prebid-server-java/contributors/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/prebid/prebid-server-java/blob/master/docs/contributing.md) 
-[![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/prebid/prebid-server-java.svg)](https://GitHub.com/prebid/prebid-server-java/pull/)
+[![GitHub contributors](https://img.shields.io/github/contributors/prebid/prebid-server-java.svg)](https://github.com/aclrys/prebid-server-java/contributors/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/aclrys/prebid-server-java/blob/master/docs/contributing.md) 
+[![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/prebid/prebid-server-java.svg)](https://github.com/aclrys/prebid-server-java/pull/)
 
 Prebid Server is an open source implementation of Server-Side Header Bidding.
 It is managed by Prebid.org,
@@ -44,7 +44,7 @@ Follow next steps to create JAR file which can be deployed locally.
 
 - Download or clone a project:
 ```bash
-git clone https://github.com/prebid/prebid-server-java.git
+git clone https://github.com/aclrys/prebid-server-java.git
 ```
 
 - Move to project directory:

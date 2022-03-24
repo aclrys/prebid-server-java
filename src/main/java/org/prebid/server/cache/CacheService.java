@@ -63,7 +63,7 @@ import java.util.stream.Stream;
 /**
  * Client stores values in Prebid Cache.
  * <p>
- * For more info, see https://github.com/prebid/prebid-cache project.
+ * For more info, see https://github.com/aclrys/prebid-cache project.
  */
 public class CacheService {
 
